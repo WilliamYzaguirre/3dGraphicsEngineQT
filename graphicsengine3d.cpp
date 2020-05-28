@@ -71,20 +71,28 @@ void GraphicsEngine3D::keyPressEvent(QKeyEvent *event)
     switch(event->key())
     {
     case Qt::Key_Up:
-        std::cout << "Up" << std::endl;
         inputBuffer.push(Qt::Key_Up);	// Travel Upwards
         break;
     case Qt::Key_Down:
-        std::cout << "Down" << std::endl;
         inputBuffer.push(Qt::Key_Down);	// Travel Down
         break;
     case Qt::Key_Left:
-        std::cout << "Left" << std::endl;
         inputBuffer.push(Qt::Key_Left);	// Travel along x-axis
         break;
     case Qt::Key_Right:
-        std::cout << "Right" << std::endl;
         inputBuffer.push(Qt::Key_Right);	// Travel along x-axis
+        break;
+    case Qt::Key_W:
+        inputBuffer.push(Qt::Key_W);	// Travel Straight
+        break;
+    case Qt::Key_A:
+        inputBuffer.push(Qt::Key_A);	// Turn left
+        break;
+    case Qt::Key_S:
+        inputBuffer.push(Qt::Key_S);	// Travel Back
+        break;
+    case Qt::Key_D:
+        inputBuffer.push(Qt::Key_D);	// Turn right
         break;
     }
 }
@@ -101,6 +109,7 @@ void GraphicsEngine3D::render(QPainter *p, float fElapsedTime)
 {
     if (inputBuffer.size() != 0)
     {
+        vec3d vForward = Vector_Mul(vLookDir, 8.0f * fElapsedTime);
         switch (inputBuffer.front())
         {
         case Qt::Key_Up:
@@ -117,6 +126,22 @@ void GraphicsEngine3D::render(QPainter *p, float fElapsedTime)
             break;
         case Qt::Key_Right:
             vCamera.x += 8.0f * fElapsedTime;	// Travel along x-axis
+            inputBuffer.pop();
+            break;
+        case Qt::Key_W:
+            vCamera = Vector_Add(vCamera, vForward);
+            inputBuffer.pop();
+            break;
+        case Qt::Key_A:
+            fYaw -= 2.0f * fElapsedTime;
+            inputBuffer.pop();
+            break;
+        case Qt::Key_S:
+            vCamera = Vector_Sub(vCamera, vForward);
+            inputBuffer.pop();
+            break;
+        case Qt::Key_D:
+            fYaw += 2.0f * fElapsedTime;
             inputBuffer.pop();
             break;
         }
