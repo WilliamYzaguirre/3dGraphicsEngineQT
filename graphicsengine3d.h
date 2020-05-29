@@ -90,6 +90,7 @@ private:
     int m_timerId;
     float fTheta;
     mesh meshCube;
+    mesh meshPot;
     mat4x4 matProj;
 
     std::queue<Qt::Key> inputBuffer;
@@ -368,6 +369,7 @@ private:
             // represent a quad with two new triangles
 
             // Copy appearance info to new triangles
+            //
             out_tri1.col =  in_tri.col;
 
             out_tri2.col =  in_tri.col;

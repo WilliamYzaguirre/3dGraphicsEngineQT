@@ -46,7 +46,9 @@ void RasterWindow::renderNow()
 
     setTitle(QString::number(fps));
 
-    painter.fillRect(0, 0, width(), height(), Qt::black);
+    QLinearGradient linearGrad;
+
+    painter.fillRect(0, 0, width(), height(), Qt::black);//linearGrad.SpringWarmth);
     render(&painter, fElapsedTime);
     painter.end();
 

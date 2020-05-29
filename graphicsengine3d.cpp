@@ -36,7 +36,6 @@ GraphicsEngine3D::GraphicsEngine3D()
     };
     */
 
-
     if (!meshCube.LoadFromObjectFile("D:\\Documents\\QT Projects\\3dRaster\\objects\\teapot.obj"))
     {
         std::cout << "Can't open file" << std::endl;
@@ -147,30 +146,8 @@ void GraphicsEngine3D::render(QPainter *p, float fElapsedTime)
         }
     }
 
-    /*
-    // Set up rotation matrices
-    mat4x4 matRotZ, matRotX;
-    fTheta += 1.0f * fElapsedTime;
-
-    // Rotation Z
-    matRotZ.m[0][0] = cosf(fTheta);
-    matRotZ.m[0][1] = sinf(fTheta);
-    matRotZ.m[1][0] = -sinf(fTheta);
-    matRotZ.m[1][1] = cosf(fTheta);
-    matRotZ.m[2][2] = 1;
-    matRotZ.m[3][3] = 1;
-
-    // Rotation X
-    matRotX.m[0][0] = 1;
-    matRotX.m[1][1] = cosf(fTheta * 0.5f);
-    matRotX.m[1][2] = sinf(fTheta * 0.5f);
-    matRotX.m[2][1] = -sinf(fTheta * 0.5f);
-    matRotX.m[2][2] = cosf(fTheta * 0.5f);
-    matRotX.m[3][3] = 1;
-    */
-
     //Set up "World Transform"
-    //fTheta += 1.0f * fElapsedTime; // Uncomment to spin me right round baby right round
+    fTheta += 1.0f * fElapsedTime; // Uncomment to spin me right round baby right round
     mat4x4 matRotZ, matRotX;
     matRotZ = Matrix_MakeRotationZ(fTheta * 0.5f);
     matRotX = Matrix_MakeRotationX(fTheta);
@@ -226,7 +203,7 @@ void GraphicsEngine3D::render(QPainter *p, float fElapsedTime)
         //if ray is aligned with normal then triangle is visible
         if(Vector_DotProduct(normal, vCameraRay) < 0.0f)
         {
-            vec3d light_direction = {0.0f, 0.0f, -1.0f};
+            vec3d light_direction = {0.0f, 1.0f, -1.0f};
             float l = sqrtf(light_direction.x*light_direction.x + light_direction.y*light_direction.y + light_direction.z*light_direction.z);
             light_direction.x /= l; light_direction.y /= l; light_direction.z /= l;
 
@@ -234,8 +211,10 @@ void GraphicsEngine3D::render(QPainter *p, float fElapsedTime)
             float dp = normal.x * light_direction.x + normal.y * light_direction.y + normal.z * light_direction.z;
 
             //Choose color as required
-            int color = 255 * dp;
-            QColor col{color,color,color};
+            int r = 255 * dp;
+            int g = 255 * dp;
+            int b = 255 * dp;
+            QColor col{r,g,b};
             triTransformed.col = col;
 
             // Convert World Space into View Space
